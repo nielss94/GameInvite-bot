@@ -2,17 +2,21 @@ const Discord = require('discord.js');
 const client = new Discord.Client();
 
 const prefix = '!';
-const clearingInterval = 1800000;
 
 //1800000 is 30 minutes
+const clearingInterval = 1800000;
 
 client.on('ready', () => {
     console.log(`logged in as ${client.user.tag}!`);
 });
 
 client.on('message', (msg) => {
-    if(msg.content.toLowerCase() === `${prefix}deleteOODvoice`.toLowerCase()){
+    const message = msg.content;
+
+    if(message.toLowerCase() === `${prefix}deleteOODvoice`.toLowerCase()){
         clearOODVoiceChannels();
+    }else if(message.toLowerCase() === `${prefix}deleteEmptyVoice`.toLowerCase()){
+        deleteEmptyVoiceChannels();
     }
 });
 
@@ -22,6 +26,7 @@ function createChannelAndInvite(game){
     return new Promise((resolve, reject) => {
         client.guilds.array()[0].createChannel(game+'Game'+Math.floor((Math.random() * 20)).toString(),'voice')
             .then((channel) => {
+                channel.setParent(client.guilds.array()[0].channels.array().find(ch => ch.name == 'Voice Channels'));
                 channel.createInvite()
                     .then((invite) => {
                         console.log(`Created invite with code ${invite.url}`);
@@ -35,6 +40,18 @@ function createChannelAndInvite(game){
             .catch((err) => {
                 console.error();
             });
+    });
+}
+
+
+function deleteEmptyVoiceChannels(){
+    client.guilds.array()[0].channels.forEach(element => {
+        if(element.type === 'voice') {
+            console.log(`deleting - ${element.name} , created at: ${element.createdAt}`);
+            if(element.members.array().length === 0){
+                element.delete();
+            }
+        }
     });
 }
 
