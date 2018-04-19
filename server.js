@@ -39,20 +39,39 @@ io.on('connection', function (socket) {
         console.log(data);
         console.log(io.nsps['/'].adapter.rooms[data]);
         let roomLength = io.nsps['/'].adapter.rooms[data].length;
-        if(roomLength >= 2) {
-            dcClient.createChannelAndInvite(data)
-            .then(url => {
-                io.to(data).emit("foundparty", url);
-                io.of('/').in(data).clients((error, socketIds) => {
-                    if (error) throw error;
-                    socketIds.forEach(socketId => io.sockets.sockets[socketId].leave(data));
-                  });
-            })
-            .catch(err => {
-                res.status(400).send(err);
-            });
-            
+        switch(data){
+            case 'fortnite-duo':
+                if(roomLength >= 2) {
+                    dcClient.createChannelAndInvite(data)
+                    .then(url => {
+                        io.to(data).emit("foundparty", url);
+                        io.of('/').in(data).clients((error, socketIds) => {
+                            if (error) throw error;
+                            socketIds.forEach(socketId => io.sockets.sockets[socketId].leave(data));
+                        });
+                    })
+                    .catch(err => {
+                        res.status(400).send(err);
+                    });
+                }
+            break;
+            case 'fortnite-squad':
+                if(roomLength >= 4) {
+                    dcClient.createChannelAndInvite(data)
+                    .then(url => {
+                        io.to(data).emit("foundparty", url);
+                        io.of('/').in(data).clients((error, socketIds) => {
+                            if (error) throw error;
+                            socketIds.forEach(socketId => io.sockets.sockets[socketId].leave(data));
+                        });
+                    })
+                    .catch(err => {
+                        res.status(400).send(err);
+                    });
+                }
+            break;
         }
+        
     });
 
     socket.on('disconnect', function () {
