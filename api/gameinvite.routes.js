@@ -10,7 +10,9 @@ routes.post('/channelinvite', function(req, res) {
     if(game){
         dcClient.createChannelAndInvite(game)
             .then(url => {
-                res.status(200).send(url);
+                res.status(200).send({
+                    "url" : url
+                });
             })
             .catch(err => {
                 res.status(400).send(err);
