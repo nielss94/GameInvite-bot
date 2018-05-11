@@ -30,7 +30,10 @@ function createChannelAndInvite(game){
                 channel.createInvite()
                     .then((invite) => {
                         console.log(`Created invite with code ${invite.url}`);
-                        resolve(invite.url);         
+                        resolve({
+                            url: invite.url,
+                            channel: invite.channel.name
+                        });         
                     })
                     .catch((err) => {
                         console.error();
@@ -60,12 +63,12 @@ function clearOODVoiceChannels() {
 
     client.guilds.array()[0].channels.forEach(element => {
         if(element.type === 'voice') {
-            console.log(`deleting - ${element.name} , created at: ${element.createdAt}`);
             if(element.members.array().length === 0){
                 var today = new Date();
                 
                 var minutesDifference = Math.abs(today.getTime() -  element.createdTimestamp) / 1000 / 60;
                 if(minutesDifference > 20){
+                    console.log(`deleting - ${element.name} , created at: ${element.createdAt}`);
                     element.delete();
                     amount++;
                 }
