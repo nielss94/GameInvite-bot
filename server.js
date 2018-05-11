@@ -6,8 +6,6 @@ const dcClient = require('./bot/discordbot');
 var server = require('http').createServer(app);
 var io = require('socket.io').listen(server);
 
-var remove = require('lodash.remove');
-
 var cors = require('cors');
 
 var gameinviteRoutes = require('./api/gameinvite.routes');
@@ -34,7 +32,7 @@ io.on('connection', function (socket) {
     console.log('user connected');
 
     socket.on('send-message', function(data) {
-        socket.to(data.chatRoom).emit('send-message',{
+        socket.to(data.chatRoom).emit('send-message', {
             local: false,
             message: data.message}
         );
