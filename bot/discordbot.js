@@ -20,9 +20,9 @@ client.on('message', (msg) => {
     }
 });
 
-client.login('NDM1MTA1OTcwMTg4ODQ1MDc2.DbUHlA.I7AatSicXivxx0t7xGvYCmuvhCg');
+client.login(process.env.BOTTOKEN);
 
-function createChannelAndInvite(game){
+function createChannelAndInvite(game, cb){
     return new Promise((resolve, reject) => {
         client.guilds.array()[0].createChannel(game+'Game'+Math.floor((Math.random() * 20)).toString(),'voice')
             .then((channel) => {

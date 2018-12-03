@@ -1,6 +1,5 @@
 var express = require('express'),
     routes = express.Router();
-var server = require('../server');
 const dcClient = require('../bot/discordbot');
 
 

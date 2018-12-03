@@ -96,6 +96,8 @@ io.on('connection', function (socket) {
     });
 });
 
+
+
 function foundParty(game){
     dcClient.createChannelAndInvite(game)
     .then(invite => {
