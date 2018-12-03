@@ -1,6 +1,5 @@
 var express = require('express'),
     routes = express.Router();
-var server = require('../server');
 const dcClient = require('../bot/discordbot');
 
 
@@ -9,9 +8,10 @@ routes.post('/channelinvite', function(req, res) {
 
     if(game){
         dcClient.createChannelAndInvite(game)
-            .then(url => {
+            .then(invite => {
                 res.status(200).send({
-                    "url" : url
+                    "url" : invite.url,
+                    "channel" : invite.channel.name
                 });
             })
             .catch(err => {

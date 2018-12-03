@@ -14,7 +14,6 @@
     "cors": "^2.8.4",
     "discord.js": "^11.3.2",
     "express": "^4.16.3",
-    "lodash.remove": "^4.7.0",
     "socket.io": "^2.1.0"
   }
 }
